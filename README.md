@@ -1,1 +1,9 @@
-Initial commit
+
+
+
+
+
+FEATURE CREEP LIST: 
+
+FRONT: 
+Login validation
