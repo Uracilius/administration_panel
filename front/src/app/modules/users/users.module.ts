@@ -3,12 +3,12 @@ import { UsersMainComponent } from './users-main/users-main.component';
 import { UsersRoutingModule } from './users-routing.module';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../assets/material/material.module';
-
-
+import { PermissionsTableComponent } from './components/permissions-table/permissions-table.component';
 
 @NgModule({
   declarations: [
-    UsersMainComponent
+    UsersMainComponent,
+    PermissionsTableComponent
   ],
   imports: [
     UsersRoutingModule,
