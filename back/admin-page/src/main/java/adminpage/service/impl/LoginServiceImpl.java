@@ -1,31 +1,47 @@
 package adminpage.service.impl;
 
-import adminpage.DTO.UserEntity;
+import adminpage.entity.LoginEntity;
 import adminpage.DTO.response.LoginResponse;
 import adminpage.DTO.request.LoginRequest;
-import adminpage.repository.UserRepository;
+import adminpage.repository.LoginRepository;
 import adminpage.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
     @Autowired
-    private UserRepository userRepository;
+    private LoginRepository loginRepository;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // Corrected variable declaration and assignment
+
     @Override
     public LoginResponse login(LoginRequest request) {
         String username = request.getUsername();
-        String password = request.getPassword();
+        String password = passwordEncoder.encode(request.getPassword()); // Encoding password before comparison is unnecessary
 
-        UserEntity user = userRepository.findByUsername(username);
+        LoginEntity user = loginRepository.findByUsername(username);
 
-        if (user != null && user.getPassword().equals(password)) {
+        // You should use passwordEncoder.matches() to compare encoded password
+        if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return new LoginResponse("Imagine I generated this token", "OK");
         } else {
             return new LoginResponse("Nah bro", "NOT OK");
         }
     }
-}
 
+    public LoginResponse register(LoginRequest request){
+
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
+        LoginEntity entityToSave = new LoginEntity();
+        entityToSave.setUsername(request.getUsername());
+        entityToSave.setPassword(encodedPassword);
+        loginRepository.save(entityToSave);
+        return new LoginResponse("Heeey friend, password set" +
+                "", "OK");
+    }
+}

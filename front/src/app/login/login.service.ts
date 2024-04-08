@@ -17,5 +17,9 @@ export class LoginService {
     return this.http.post<any>(`${this.path}/login`, formData.value);
   }
 
+  register(item: any): Observable<any> {
+    return this.http.post<any>(`${this.path}/register`, item);
+  }
+
 }
  

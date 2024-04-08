@@ -17,4 +17,9 @@ public class LoginController {
         System.out.println("Received login request with credentials: "+ request.toString());
         return loginService.login(request);
     }
+
+    @PostMapping("/register")
+    public LoginResponse register(@RequestBody LoginRequest request) {
+        return loginService.register(request);
+    }
 }

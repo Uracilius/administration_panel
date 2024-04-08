@@ -8,7 +8,7 @@ import { ɵallowPreviousPlayerStylesMerge } from '@angular/animations/browser';
   styleUrl: './permissions-table.component.css'
 })
 export class PermissionsTableComponent {
-  displayedColumns= ['id', 'org_id', 'services', 'username', 'password'];
+  displayedColumns= ['userId', 'username', 'userDescription', 'userPassword', 'serviceIds', 'serviceNames', ];
   dataSource = [{id:"hello",org_id:"world", services:"I am", username:"alive", password:"alive"}]
   constructor(
     private usersApiService: UsersApiService,
@@ -20,8 +20,8 @@ export class PermissionsTableComponent {
   populateTable(){
     this.usersApiService.getUsersTable(0, 10).subscribe(
       data => {
-        if (data.code == 'OK'){
-          console.log('data', data)
+        if (data){
+          this.dataSource = data;
         }
       }
     )

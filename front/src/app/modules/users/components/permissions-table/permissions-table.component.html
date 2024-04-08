@@ -1,30 +1,41 @@
 <div class="centered-container">
     <div class="mat-elevation-z8 custom-table">
         <table mat-table [dataSource]="dataSource">
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> ID </th>
-                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="org_id">
-                <th mat-header-cell *matHeaderCellDef> Organization </th>
-                <td mat-cell *matCellDef="let element"> {{element.org_id}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="services">
-                <th mat-header-cell *matHeaderCellDef> Services </th>
-                <td mat-cell *matCellDef="let element"> {{element.services}} </td>
+            <ng-container matColumnDef="userId">
+                <th mat-header-cell *matHeaderCellDef> userId </th>
+                <td mat-cell *matCellDef="let element"> {{element.userId}} </td>
             </ng-container>
 
             <ng-container matColumnDef="username">
-                <th mat-header-cell *matHeaderCellDef> Username </th>
+                <th mat-header-cell *matHeaderCellDef> username </th>
                 <td mat-cell *matCellDef="let element"> {{element.username}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="password">
-                <th mat-header-cell *matHeaderCellDef> Password </th>
-                <td mat-cell *matCellDef="let element"> {{element.password}} </td>
+            <ng-container matColumnDef="userDescription">
+                <th mat-header-cell *matHeaderCellDef> userDescription </th>
+                <td mat-cell *matCellDef="let element"> {{element.userDescription}} </td>
             </ng-container>
+
+            <ng-container matColumnDef="userPassword">
+                <th mat-header-cell *matHeaderCellDef> userPassword </th>
+                <td mat-cell *matCellDef="let element"> {{element.userPassword}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceIds">
+                <th mat-header-cell *matHeaderCellDef> serviceIds </th>
+                <td mat-cell *matCellDef="let element"> {{element.serviceIds}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceNames">
+                <th mat-header-cell *matHeaderCellDef> serviceNames </th>
+                <td mat-cell *matCellDef="let element"> {{element.serviceNames}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceDescriptions">
+                <th mat-header-cell *matHeaderCellDef> serviceDescriptions </th>
+                <td mat-cell *matCellDef="let element"> {{element.serviceDescriptions}} </td>
+            </ng-container>
+
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

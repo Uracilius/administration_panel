@@ -40,4 +40,11 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+  register(){
+    this.loginService.register({username: "admin", password: "admin"}).subscribe(
+      res => {
+        console.log('res', res)
+      }
+    );
+  }
 }

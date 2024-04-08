@@ -1,5 +1,6 @@
 .custom-table {
-  width: 75%;
+  width: 100%;
+  overflow-x: scroll;
 }
 
 .centered-container{

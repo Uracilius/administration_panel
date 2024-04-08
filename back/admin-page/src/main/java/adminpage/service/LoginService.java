@@ -7,4 +7,6 @@ public interface LoginService {
 
     LoginResponse login(LoginRequest request);
 
+    LoginResponse register(LoginRequest request);
+
 }
