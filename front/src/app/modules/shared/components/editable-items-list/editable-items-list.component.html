@@ -1,0 +1,8 @@
+<div  
+    *ngFor="let item of itemDisplayList; let i = index;"
+    matRipple
+    (click)="rowClick(i)"
+    [ngClass]="{'selected-item': selectedRowIndex === i}" 
+    class="item">
+    {{ item }}
+</div>

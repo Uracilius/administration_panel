@@ -8,7 +8,7 @@ import { ɵallowPreviousPlayerStylesMerge } from '@angular/animations/browser';
   styleUrl: './permissions-table.component.css'
 })
 export class PermissionsTableComponent {
-  displayedColumns= ['userId', 'username', 'userDescription', 'userPassword', 'serviceIds', 'serviceNames', ];
+  displayedColumns= ['userId', 'username', 'userDescription', 'serviceIds', 'serviceNames', ];
   dataSource = [{id:"hello",org_id:"world", services:"I am", username:"alive", password:"alive"}]
   constructor(
     private usersApiService: UsersApiService,

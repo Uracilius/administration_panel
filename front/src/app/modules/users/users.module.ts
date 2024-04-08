@@ -4,6 +4,7 @@ import { UsersRoutingModule } from './users-routing.module';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../assets/material/material.module';
 import { PermissionsTableComponent } from './components/permissions-table/permissions-table.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { PermissionsTableComponent } from './components/permissions-table/permis
   imports: [
     UsersRoutingModule,
     MaterialModule,
-    CommonModule
+    CommonModule,
+    SharedModule
   ]
 })
 export class UsersModule { }

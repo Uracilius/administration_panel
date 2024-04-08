@@ -28,7 +28,7 @@
 
             <ng-container matColumnDef="serviceNames">
                 <th mat-header-cell *matHeaderCellDef> serviceNames </th>
-                <td mat-cell *matCellDef="let element"> {{element.serviceNames}} </td>
+                <td mat-cell *matCellDef="let element"> <app-editable-items-list [itemDisplayList]="element.serviceNames"></app-editable-items-list> </td>
             </ng-container>
 
             <ng-container matColumnDef="serviceDescriptions">

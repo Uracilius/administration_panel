@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsersServiceImpl implements UsersService {
 
-    @Autowired // Add autowired annotation
+    @Autowired
     private UserRepository userRepository;
 
     @Override
