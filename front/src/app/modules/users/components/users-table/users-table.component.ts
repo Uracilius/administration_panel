@@ -10,9 +10,10 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrl: './users-table.component.css'
 })
 export class UsersTableComponent {
-  displayedColumns= ['login', 'description', 'status', 'created', ];
+  displayedColumns= ['login', 'description', 'status', 'created'];
   dataSource = new MatTableDataSource<any>(); 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  actionsColumn = "actions"
 
   constructor(
     private usersApiService: UsersApiService,
@@ -32,6 +33,14 @@ export class UsersTableComponent {
          }
       }
     )
+  }
+
+  editItem(element: any){
+    console.log('Editing', element)
+  }
+
+  deleteItem(element: any){
+    console.log('Delete', element)
   }
 
   userClick(row: any){

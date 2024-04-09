@@ -4,6 +4,7 @@ import adminpage.DTO.request.PaginatedRequest;
 import adminpage.entity.ClientEntity;
 import adminpage.entity.ServiceEntity;
 import adminpage.entity.UserEntity;
+import adminpage.entity.UserServiceAccessEntity;
 import adminpage.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,15 @@ public class UsersController {
     @PostMapping("users/getUserClients")
     public List<ClientEntity> getUserClients(@RequestParam Long userId) {
         return usersService.getUserClients(userId);
+    }
+
+    @PostMapping("users/addUser")
+    public UserEntity addUser(@RequestBody UserEntity user) {
+        return usersService.addUser(user);
+    }
+
+    @PostMapping("users/addUserService")
+    public UserServiceAccessEntity addUserService(@RequestBody UserServiceAccessEntity userServiceAccessDTO) {
+        return usersService.addUserServiceAccess(userServiceAccessDTO);
     }
 }

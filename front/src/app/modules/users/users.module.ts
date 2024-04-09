@@ -8,13 +8,15 @@ import { UserServicesTableComponent } from './components/user-services-table/use
 import { UserModuleCommunicationService } from './services/user-module-communication.service';
 import { UserClientsTableComponent } from './components/user-clients-table/user-clients-table.component';
 import { UsersTableComponent } from './components/users-table/users-table.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
 
 @NgModule({
   declarations: [
     UsersMainComponent,
     UsersTableComponent,
     UserServicesTableComponent,
-    UserClientsTableComponent
+    UserClientsTableComponent,
+    UserFormComponent,
   ],
   imports: [
     UsersRoutingModule,
