@@ -2,3 +2,45 @@
 
 html, body { height: 100%; }
 body { height: 100vh; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.card-body {
+    height: calc(100dvh - 177px);
+    overflow-y: auto;
+    padding-bottom: 96px;
+    padding-top: 24px;
+  }
+
+.card-body__line {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.card-body__line-left {
+    width: calc(50% - 16px);
+}
+  
+.card-body__line-right {
+    width: calc(50% - 16px);
+}
+
+.card-body__line-full {
+    width: 100%;
+  }
+  
+.container {
+    width: 100%;
+    max-width: 1432px;
+    padding: 0 16px;
+    margin: 0 auto;
+}
+
+.main {
+    width: 100%;
+    height: calc(100dvh - 64px);
+    display: block;
+    position: relative;
+    background-color: white;
+  }

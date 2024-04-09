@@ -12,9 +12,12 @@ export class UsersApiService {
   
   constructor(private http: HttpClient) { }
 
-  getUsersTable(page:number, pageSize: number): Observable<any> {
-    return this.http.post<any>(`${this.path}/getUserServiceAccess`, {page, pageSize});
+  getUsersList(page:number, pageSize: number): Observable<any> {
+    return this.http.post<any>(`${this.path}/getUsers`, {page, pageSize});
   }
 
+  getUserServicesList(userId: number): Observable<any> {
+    return this.http.post<any>(`${this.path}/getUserServices?userId=${userId}`, {});
+  }
 }
  

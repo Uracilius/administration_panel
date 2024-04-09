@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EditableItemsListComponent } from './editable-items-list.component';
 
 describe('EditableItemsListComponent', () => {

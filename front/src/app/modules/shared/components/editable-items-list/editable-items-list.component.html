@@ -2,6 +2,7 @@
     *ngFor="let item of itemDisplayList; let i = index;"
     matRipple
     (click)="rowClick(i)"
+    matTooltip="hello"
     [ngClass]="{'selected-item': selectedRowIndex === i}" 
     class="item">
     {{ item }}

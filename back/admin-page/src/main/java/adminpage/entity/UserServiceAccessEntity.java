@@ -8,10 +8,10 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "esb_auth_user_service_access", schema = "esb")
-public class UserServiceAccess {
+public class UserServiceAccessEntity {
     @Id
     private Long user_id;
 
-    private Long client_id;
+    private Long service_id;
 
 }

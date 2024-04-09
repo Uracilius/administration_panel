@@ -11,18 +11,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   imports: [
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatTableModule,
-    MatSnackBarModule,
-    MatPaginatorModule,
-    MatRippleModule,
-    MatDividerModule
   ],
   exports: [
     MatButtonModule,
@@ -38,7 +31,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatDividerModule,
     MatProgressSpinnerModule,
     MatMenuModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule {}
