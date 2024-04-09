@@ -3,9 +3,9 @@ import { UsersApiService } from '../../services/users-api.service';
 import { UserModuleCommunicationService } from '../../services/user-module-communication.service';
 
 @Component({
-  selector: 'app-permissions-table',
-  templateUrl: './permissions-table.component.html',
-  styleUrl: './permissions-table.component.css'
+  selector: 'app-users-table',
+  templateUrl: './users-table.component.html',
+  styleUrl: './users-table.component.css'
 })
 export class UsersListComponent {
   displayedColumns= ['id', 'login', 'description', 'status', 'created', ];

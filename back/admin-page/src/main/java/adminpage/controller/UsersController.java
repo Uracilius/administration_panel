@@ -1,6 +1,7 @@
 package adminpage.controller;
 
 import adminpage.DTO.request.PaginatedRequest;
+import adminpage.entity.ClientEntity;
 import adminpage.entity.ServiceEntity;
 import adminpage.entity.UserEntity;
 import adminpage.service.UsersService;
@@ -23,5 +24,10 @@ public class UsersController {
     @PostMapping("users/getUserServices")
     public List<ServiceEntity> getUserServices(@RequestParam Long userId) {
         return usersService.getUserServices(userId);
+    }
+
+    @PostMapping("users/getUserClients")
+    public List<ClientEntity> getUserClients(@RequestParam Long userId) {
+        return usersService.getUserClients(userId);
     }
 }

@@ -4,6 +4,7 @@ import adminpage.DTO.request.PaginatedRequest;
 import adminpage.entity.ClientEntity;
 import adminpage.entity.ServiceEntity;
 import adminpage.entity.UserEntity;
+import adminpage.repository.ClientRepository;
 import adminpage.repository.ServiceRepository;
 import adminpage.repository.UserRepository;
 import adminpage.repository.UserServiceAccessRepository;
@@ -26,7 +27,8 @@ public class UsersServiceImpl implements UsersService {
     private UserRepository userRepository;
     @Autowired
     private ServiceRepository serviceRepository;
-
+    @Autowired
+    private ClientRepository clientRepository;
     @Override
     public List<UserEntity> getUserList(PaginatedRequest paginatedRequest){
         Pageable currentPageInfo = PageRequest.of(paginatedRequest.getPage(), paginatedRequest.getPageSize());
@@ -62,6 +64,6 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public List<ClientEntity> getUserClients(Long userId) {
-        return null;
+        return clientRepository.findAllClientsByUserId(userId);
     }
 }

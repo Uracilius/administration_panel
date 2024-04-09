@@ -3,11 +3,11 @@ import { UsersApiService } from '../../services/users-api.service';
 import { UserModuleCommunicationService } from '../../services/user-module-communication.service';
 
 @Component({
-  selector: 'app-user-services-table',
-  templateUrl: './user-services-table.component.html',
-  styleUrl: './user-services-table.component.css'
+  selector: 'app-user-clients-table',
+  templateUrl: './user-clients-table.component.html',
+  styleUrl: './user-clients-table.component.css'
 })
-export class UserServicesTableComponent {
+export class UserClientsTableComponent {
   displayedColumns= ['code', 'name', 'description', 'shep_code' ];
   dataSource = [{id:"hello",org_id:"world", services:"hello", username:"world", password:"hello"}]
   constructor(
@@ -29,7 +29,7 @@ export class UserServicesTableComponent {
 
   }
   populateTable(userId: number){
-    this.usersApiService.getUserServicesList(userId).subscribe(
+    this.usersApiService.getUserClientsList(userId).subscribe(
       data => {
         if (data){
           this.dataSource = data;

@@ -1,8 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { height: 100vh; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+body {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+}
 
 .card-body {
     height: calc(100dvh - 177px);
@@ -13,7 +18,7 @@ body { height: 100vh; margin: 0; font-family: Roboto, "Helvetica Neue", sans-ser
 
 .card-body__line {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 24px;
 }
@@ -43,4 +48,4 @@ body { height: 100vh; margin: 0; font-family: Roboto, "Helvetica Neue", sans-ser
     display: block;
     position: relative;
     background-color: white;
-  }
+}

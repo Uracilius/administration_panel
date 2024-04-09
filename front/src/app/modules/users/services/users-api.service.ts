@@ -19,5 +19,9 @@ export class UsersApiService {
   getUserServicesList(userId: number): Observable<any> {
     return this.http.post<any>(`${this.path}/getUserServices?userId=${userId}`, {});
   }
+
+  getUserClientsList(userId: number): Observable<any> {
+    return this.http.post<any>(`${this.path}/getUserClients?userId=${userId}`, {});
+  }
 }
  

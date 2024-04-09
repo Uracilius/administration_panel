@@ -11,4 +11,5 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, Long> {
 
     @Query("SELECT se FROM UserServiceAccessEntity usa JOIN ServiceEntity se ON usa.service_id = se.id WHERE usa.user_id = ?1")
     List<ServiceEntity> findAllServicesByUserId(Long userId);
+
 }
