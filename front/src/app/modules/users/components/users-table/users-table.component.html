@@ -14,7 +14,8 @@
             #paginator
             [pageSizeOptions]="[5, 10, 20]"
             showFirstLastButtons
-            [length]="dataSource.data.length">
+            [pageIndex]="page"
+            [pageSize]="pageSize">
         </mat-paginator>
     </div>
 </div>

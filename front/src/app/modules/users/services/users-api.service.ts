@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { FormGroup } from '@angular/forms';
 
 
 @Injectable({
@@ -22,6 +23,10 @@ export class UsersApiService {
 
   getUserClientsList(userId: number): Observable<any> {
     return this.http.post<any>(`${this.path}/getUserClients?userId=${userId}`, {});
+  }
+
+  addUser(formData: FormGroup): Observable<any> {
+    return this.http.post<any>(`${this.path}/addUser`, formData.value);
   }
 }
  

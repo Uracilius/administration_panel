@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('submitted')
     this.loginService.login(this.loginForm).subscribe(
       res => {
         if (res.code == 'OK') {

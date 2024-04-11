@@ -9,6 +9,7 @@ import { UserModuleCommunicationService } from './services/user-module-communica
 import { UserClientsTableComponent } from './components/user-clients-table/user-clients-table.component';
 import { UsersTableComponent } from './components/users-table/users-table.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { UserFormComponent } from './components/user-form/user-form.component';
     UsersRoutingModule,
     MaterialModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   providers: [
     UserModuleCommunicationService
