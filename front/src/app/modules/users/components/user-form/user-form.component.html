@@ -18,7 +18,7 @@
           <mat-form-field class="example-full-width">
             <input 
                 matInput 
-                type="pass" 
+                type="password" 
                 formControlName="pass" 
                 placeholder="Pass"
                 name="pass"
@@ -35,8 +35,8 @@
                 required>
           </mat-form-field>
           <mat-card-actions>
-            <button mat-raised-button type="submit" color="primary">Login</button>
-            
+            <button *ngIf="!isEdit" mat-raised-button type="submit" color="primary">Login</button>
+            <button *ngIf="isEdit" mat-raised-button type="submit" color="primary">Edit</button>
           </mat-card-actions>
             </form>
         </mat-card-content>

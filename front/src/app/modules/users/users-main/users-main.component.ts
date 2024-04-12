@@ -5,15 +5,14 @@ import { UserFormComponent } from '../components/user-form/user-form.component';
 @Component({
   selector: 'app-users-main',
   templateUrl: './users-main.component.html',
-  styleUrls: ['./users-main.component.css'] // Use styleUrls instead of styleUrl
+  styleUrls: ['./users-main.component.css'] 
 })
 export class UsersMainComponent {
-  constructor(private dialog: MatDialog) { } // Removed 'private' from constructor parameters
+  constructor(private dialog: MatDialog) { } 
 
   initializeUserForm(): void {
     const dialogRef = this.dialog.open(UserFormComponent, {
-      width: '100%',
-      height: '100%',
+      width: '250px',
     });
   }
 }

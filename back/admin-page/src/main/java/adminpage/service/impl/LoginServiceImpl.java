@@ -41,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
         entityToSave.setUsername(request.getUsername());
         entityToSave.setPassword(encodedPassword);
         loginRepository.save(entityToSave);
-        return new LoginResponse("Heeey friend, password set" +
+        return new LoginResponse("Hey friend, password set" +
                 "", "OK");
     }
 }

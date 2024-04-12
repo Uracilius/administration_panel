@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrl: './user-clients-table.component.css'
 })
 export class UserClientsTableComponent {
-  displayedColumns= ['code', 'name', 'description', 'shep_code' ];
+  displayedColumns= ['code', 'name', 'description', 'actions' ];
   dataSource = new MatTableDataSource<any>(); 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(
@@ -40,6 +40,11 @@ export class UserClientsTableComponent {
       }
     )
   }
+
+  deleteItem(element: any){
+    console.log('Trying to delete')
+  }
+
   userClick(row: any){
     console.log('user clicked', row)
   }

@@ -7,6 +7,7 @@ import adminpage.entity.UserEntity;
 import adminpage.entity.UserServiceAccessEntity;
 import adminpage.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,16 @@ public class UsersController {
     @PostMapping("users/addUser")
     public UserEntity addUser(@RequestBody UserEntity user) {
         return usersService.addUser(user);
+    }
+
+    @PatchMapping("users/editUser")
+    public UserEntity editUser(@RequestBody UserEntity user){
+        return usersService.editUser(user);
+    }
+
+    @DeleteMapping("users/deleteUser")
+    public ResponseEntity<String> deleteUser(@RequestParam Long userId) {
+        return usersService.deleteUser(userId);
     }
 
     @PostMapping("users/addUserService")

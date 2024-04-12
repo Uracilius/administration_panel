@@ -28,5 +28,13 @@ export class UsersApiService {
   addUser(formData: FormGroup): Observable<any> {
     return this.http.post<any>(`${this.path}/addUser`, formData.value);
   }
+
+  editUser(formData: FormGroup): Observable<any> {
+    return this.http.patch<any>(`${this.path}/editUser`, formData.value);
+  }
+
+  deleteUser(userId: number): Observable<any> {
+    return this.http.delete<any>(`${this.path}/deleteUser?userId=${userId}`, {});
+  }
 }
  

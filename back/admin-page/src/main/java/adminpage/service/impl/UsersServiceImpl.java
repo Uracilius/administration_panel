@@ -11,9 +11,14 @@ import adminpage.repository.UserRepository;
 import adminpage.repository.UserServiceAccessRepository;
 import adminpage.service.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable; 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsersServiceImpl implements UsersService {
 
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -33,12 +39,10 @@ public class UsersServiceImpl implements UsersService {
     private UserServiceAccessRepository usaRepository;
     @Override
     public List<UserEntity> getUserList(PaginatedRequest paginatedRequest){
-        Pageable currentPageInfo = PageRequest.of(paginatedRequest.getPage(), paginatedRequest.getPageSize());
 
-        List<UserEntity> userServiceAccessData =
-                userRepository.findAll();
+        List<UserEntity> userList = userRepository.findByStatusEquals(1);
 
-        return userServiceAccessData;
+        return userList;
     }
 
     @Override
@@ -48,8 +52,9 @@ public class UsersServiceImpl implements UsersService {
             throw new IllegalArgumentException("User ID cannot be null");
         }
 
-        if(userRepository.findById(editedUser.getId())!=null){
+        if(userRepository.existsById(editedUser.getId())){
             editedUser.setUpdated(new Date());
+            editedUser.setPass(passwordEncoder.encode(editedUser.getPass()));
             userRepository.save(editedUser);
             return editedUser;
         }
@@ -79,6 +84,21 @@ public class UsersServiceImpl implements UsersService {
         return userToAdd;
     }
 
+    //TODO: Check for better error handling
+    @Override
+    public ResponseEntity<String> deleteUser(Long userId){
+        if (userRepository.existsById(userId)){
+            UserEntity user = userRepository.getById(userId);
+            user.setStatus(0);
+            userRepository.save(user);
+            return ResponseEntity.ok("User deleted successfully");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+    //TODO: better implementation
     @Override
     public UserServiceAccessEntity addUserServiceAccess(UserServiceAccessEntity usa) {
         usaRepository.save(usa);

@@ -24,10 +24,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     CommonModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     UserModuleCommunicationService
-  ]
+  ],
 })
 export class UsersModule { }
