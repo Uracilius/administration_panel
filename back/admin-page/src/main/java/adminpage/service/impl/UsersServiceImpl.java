@@ -12,7 +12,6 @@ import adminpage.repository.UserServiceAccessRepository;
 import adminpage.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable; 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -36,10 +35,10 @@ public class UsersServiceImpl implements UsersService {
     public List<UserEntity> getUserList(PaginatedRequest paginatedRequest){
         Pageable currentPageInfo = PageRequest.of(paginatedRequest.getPage(), paginatedRequest.getPageSize());
 
-        Page<UserEntity> userServiceAccessData =
-                userRepository.findAll(currentPageInfo);
+        List<UserEntity> userServiceAccessData =
+                userRepository.findAll();
 
-        return userServiceAccessData.getContent();
+        return userServiceAccessData;
     }
 
     @Override
@@ -72,8 +71,10 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UserEntity addUser(UserEntity userToAdd) {
+        //TODO: Check for replacement
         userToAdd.setUpdated(new Date());
         userToAdd.setCreated(new Date());
+        userToAdd.setStatus(1);
         userRepository.save(userToAdd);
         return userToAdd;
     }

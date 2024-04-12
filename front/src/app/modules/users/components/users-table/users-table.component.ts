@@ -15,6 +15,7 @@ export class UsersTableComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   page =  0;
   pageSize = 10;
+  selectedRow = -1;
   constructor(
     private usersApiService: UsersApiService,
     private communicationService: UserModuleCommunicationService
@@ -53,8 +54,9 @@ export class UsersTableComponent {
     this.populateTable();
   }
 
-
-  userClick(row: any){
-    this.communicationService.selectedUserId$.next(row.id)
+  userClick(row: any, index:number){
+    this.communicationService.selectedUserId$.next(row.id);
+    console.log(index)
+    this.selectedRow=index;
   }
 }
