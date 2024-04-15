@@ -24,22 +24,15 @@ export class UserFormComponent {
   }
 
   initForm(){
-    if(!this.data.existingUser && Object.keys(this.data.existingUser).length < 0) {
-      this.userForm = new FormGroup({
-        login: new FormControl('', [Validators.required]),
-        pass: new FormControl('', [Validators.required]),
-        description: new FormControl('', [Validators.required]),
-      });
-    }
-    else{
-      this.userForm = new FormGroup({
-        login: new FormControl('', [Validators.required]),
-        pass: new FormControl('', [Validators.required]),
-        description: new FormControl('', [Validators.required]),
-        id : new FormControl(0, [Validators.required]),
-        status: new FormControl(1, [Validators.required]),
-        created: new FormControl(new Date(), [Validators.required])
-      });
+    this.userForm = new FormGroup({
+      login: new FormControl('', [Validators.required]),
+      pass: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      id : new FormControl(0, [Validators.required]),
+      status: new FormControl(1, [Validators.required]),
+      created: new FormControl(new Date(), [Validators.required])
+    });
+    if(this.data.existingUser && Object.keys(this.data.existingUser).length > 0) {
       this.userForm.patchValue({
         login: this.data.existingUser.login,
         pass: this.data.existingUser.pass,

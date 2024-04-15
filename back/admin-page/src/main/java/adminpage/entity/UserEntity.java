@@ -28,10 +28,12 @@ public class UserEntity {
 
     private String description;
 
+    public UserEntity() {
+    }
     public UserEntity(UserDTO base, PasswordEncoder passwordEncoder){
         this.login = base.getLogin();
-        this.pass = base.getPass();
-        this.description = passwordEncoder.encode(base.getDescription());
+        this.pass = passwordEncoder.encode(base.getPass());
+        this.description = base.getDescription();
         this.created = new Date();
         this.updated = new Date();
         this.status = 1;

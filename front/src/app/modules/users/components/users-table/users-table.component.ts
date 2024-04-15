@@ -45,6 +45,7 @@ export class UsersTableComponent {
       }
     )
   }
+  
 
   editItem(element: any){
     const dialogRef = this.matDialog.open(UserFormComponent, {

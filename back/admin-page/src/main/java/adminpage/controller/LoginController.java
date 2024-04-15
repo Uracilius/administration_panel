@@ -14,7 +14,6 @@ public class LoginController {
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
-        System.out.println("Received login request with credentials: "+ request.toString());
         return loginService.login(request);
     }
 

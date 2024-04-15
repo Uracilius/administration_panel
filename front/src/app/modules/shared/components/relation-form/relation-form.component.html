@@ -1,0 +1,44 @@
+<div class=" mat-app-background">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>{{this.title}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form class="example-form" (ngSubmit)="onSubmit()" [formGroup]="customForm">
+          <mat-form-field class="example-full-width">
+            <input 
+                matInput 
+                type="login" 
+                formControlName="login"
+                placeholder="Login" 
+                name="login" 
+                required>
+          </mat-form-field>
+          <br>
+          <mat-form-field class="example-full-width">
+            <input 
+                matInput 
+                type="password" 
+                formControlName="pass" 
+                placeholder="Pass"
+                name="pass"
+                required>
+          </mat-form-field>
+          <br>
+          <mat-form-field class="example-full-width">
+            <input 
+                matInput 
+                type="description" 
+                formControlName="description" 
+                placeholder="Description"
+                name="description"
+                required>
+          </mat-form-field>
+          <mat-card-actions>
+            <button *ngIf="!isEdit" mat-raised-button type="submit" color="primary">Login</button>
+            <button *ngIf="isEdit" mat-raised-button type="submit" color="primary">Edit</button>
+          </mat-card-actions>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

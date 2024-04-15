@@ -48,8 +48,8 @@ public class UsersController {
         return usersService.addUserClientAccess(userClientAccessEntity);
     }
 
-    @PatchMapping("{userId}")
-    public ResponseEntity<UserEntity> editUser(@PathVariable Long userId, @RequestBody UserDTO user) {
+    @PatchMapping("edit")
+    public ResponseEntity<UserEntity> editUser(@RequestBody UserDTO user) {
         return ResponseEntity.ok(usersService.editUser(user));
     }
 

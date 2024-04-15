@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { FormGroup } from '@angular/forms';
 
@@ -13,32 +13,41 @@ export class UsersApiService {
   
   constructor(private http: HttpClient) { }
 
-  getUsersList(page:number, pageSize: number): Observable<any> {
-    return this.http.post<any>(`${this.path}/getUsers`, {page, pageSize});
+  getUsersList(page: number, pageSize: number): Observable<any> {
+    let params = new HttpParams().set('page', page).set('pageSize', pageSize);
+    return this.http.get<any>(`${this.path}`, { params });
   }
 
   getUserServicesList(userId: number): Observable<any> {
-    return this.http.post<any>(`${this.path}/getUserServices?userId=${userId}`, {});
+    return this.http.get<any>(`${this.path}/${userId}/services`);
   }
 
   getUserClientsList(userId: number): Observable<any> {
-    return this.http.post<any>(`${this.path}/getUserClients?userId=${userId}`, {});
+    return this.http.get<any>(`${this.path}/${userId}/clients`);
   }
 
   addUser(formData: FormGroup): Observable<any> {
-    return this.http.post<any>(`${this.path}/addUser`, formData.value);
+    return this.http.post<any>(`${this.path}/user`, formData.value);
+  }
+
+  addUserServiceAccess(formData: FormGroup): Observable<any> {
+    return this.http.post<any>(`${this.path}/service-access`, formData.value);
   }
 
   editUser(formData: FormGroup): Observable<any> {
-    return this.http.patch<any>(`${this.path}/editUser`, formData.value);
+    return this.http.patch<any>(`${this.path}/edit`, formData.value);
   }
 
   deleteUser(userId: number): Observable<any> {
-    return this.http.delete<any>(`${this.path}/deleteUser?userId=${userId}`, {});
+    return this.http.delete<any>(`${this.path}/${userId}`);
   }
 
   deleteUserClient(userId: number, clientId: number): Observable<any> {
-    return this.http.delete<any>(`${this.path}/deleteUserClientAccess?userId=${userId}&clientId=${clientId}`, {});
+    return this.http.delete<any>(`${this.path}/client-access/${userId}/${clientId}`);
+  }
+
+  deleteUserServiceAccess(userId: number, serviceId: number): Observable<any> {
+    return this.http.delete<any>(`${this.path}/service-access/${userId}/${serviceId}`);
   }
 }
  

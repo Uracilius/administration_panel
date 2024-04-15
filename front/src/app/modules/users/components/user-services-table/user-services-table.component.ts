@@ -10,7 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrl: './user-services-table.component.css'
 })
 export class UserServicesTableComponent {
-  displayedColumns= ['code', 'name', 'description', 'actions'];
+  displayedColumns= ['code', 'name', 'description', 'actions', ];
   dataSource = new MatTableDataSource<any>(); 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(
@@ -35,6 +35,10 @@ export class UserServicesTableComponent {
     console.log('Trying to delete')
   }
 
+  addServiceAccess(){
+    console.log('Trying to add service access')
+  }
+
   populateTable(userId: number){
     this.usersApiService.getUserServicesList(userId).subscribe(
       data => {
@@ -44,8 +48,5 @@ export class UserServicesTableComponent {
         }
       }
     )
-  }
-  userClick(row: any){
-    console.log('user clicked', row)
   }
 }
