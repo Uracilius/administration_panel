@@ -16,16 +16,16 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginRepository loginRepository;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // Corrected variable declaration and assignment
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public LoginResponse login(LoginRequest request) {
         String username = request.getUsername();
-        String password = passwordEncoder.encode(request.getPassword()); // Encoding password before comparison is unnecessary
+        String password = passwordEncoder.encode(request.getPassword());
 
         LoginEntity user = loginRepository.findByUsername(username);
 
-        // You should use passwordEncoder.matches() to compare encoded password
+
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return new LoginResponse("Imagine I generated this token", "OK");
         } else {

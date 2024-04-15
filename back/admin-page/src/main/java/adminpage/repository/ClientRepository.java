@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
 
-    @Query("SELECT ce FROM UserClientAccessEntity uca JOIN ClientEntity ce ON uca.client_id = ce.id WHERE uca.user_id = ?1")
+    @Query("SELECT ce FROM UserClientAccessEntity uca JOIN ClientEntity ce ON uca.clientId = ce.id WHERE uca.userId = ?1")
     List<ClientEntity> findAllClientsByUserId(Long userId);
 }

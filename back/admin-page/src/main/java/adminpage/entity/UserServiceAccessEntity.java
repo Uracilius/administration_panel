@@ -1,17 +1,25 @@
 package adminpage.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import adminpage.entity.embedded.UserServiceAccessId;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 @Table(name = "esb_auth_user_service_access", schema = "esb")
 public class UserServiceAccessEntity {
-    @Id
-    private Long user_id;
 
-    private Long service_id;
+    @EmbeddedId
+    private UserServiceAccessId id;
+
+    @MapsId("userId")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+    @MapsId("serviceId")
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private ServiceEntity service;
 
 }

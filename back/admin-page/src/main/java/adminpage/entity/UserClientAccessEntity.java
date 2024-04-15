@@ -1,5 +1,6 @@
 package adminpage.entity;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -11,8 +12,8 @@ import lombok.Data;
 public class UserClientAccessEntity {
 
     @Id
-    private Long user_id;
+    private Long userId;
 
-    private Long client_id;
+    private Long clientId;
 
 }

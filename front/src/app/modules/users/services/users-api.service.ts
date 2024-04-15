@@ -36,5 +36,9 @@ export class UsersApiService {
   deleteUser(userId: number): Observable<any> {
     return this.http.delete<any>(`${this.path}/deleteUser?userId=${userId}`, {});
   }
+
+  deleteUserClient(userId: number, clientId: number): Observable<any> {
+    return this.http.delete<any>(`${this.path}/deleteUserClientAccess?userId=${userId}&clientId=${clientId}`, {});
+  }
 }
  

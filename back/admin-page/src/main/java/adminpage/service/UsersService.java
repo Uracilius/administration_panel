@@ -1,10 +1,8 @@
 package adminpage.service;
 
+import adminpage.DTO.UserDTO;
 import adminpage.DTO.request.PaginatedRequest;
-import adminpage.entity.ClientEntity;
-import adminpage.entity.ServiceEntity;
-import adminpage.entity.UserEntity;
-import adminpage.entity.UserServiceAccessEntity;
+import adminpage.entity.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -12,15 +10,23 @@ import java.util.List;
 public interface UsersService {
     List<UserEntity> getUserList(PaginatedRequest request);
 
-    UserEntity editUser(UserEntity editedUser);
+    UserEntity editUser(UserDTO user);
 
     List<ServiceEntity> getUserServices(Long userId);
 
+    UserServiceAccessEntity addUserServiceAccess(UserServiceAccessEntity usa);
+
+    ResponseEntity<String> deleteUserServiceAccess(Long userId, Long serviceId);
+
     List<ClientEntity> getUserClients(Long userId);
 
-    UserEntity addUser(UserEntity userToAdd);
+    UserClientAccessEntity addUserClientAccess(UserClientAccessEntity userClientAccessEntity);
+
+    ResponseEntity<String> deleteUserClientAccess(Long userId, Long clientId);
+
+    UserEntity addUser(UserDTO user);
 
     ResponseEntity<String> deleteUser(Long userId);
 
-    UserServiceAccessEntity addUserServiceAccess(UserServiceAccessEntity usa);
+
 }

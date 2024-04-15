@@ -1,67 +1,46 @@
 package adminpage.service.impl;
 
+import adminpage.DTO.UserDTO;
 import adminpage.DTO.request.PaginatedRequest;
-import adminpage.entity.ClientEntity;
-import adminpage.entity.ServiceEntity;
-import adminpage.entity.UserEntity;
-import adminpage.entity.UserServiceAccessEntity;
-import adminpage.repository.ClientRepository;
-import adminpage.repository.ServiceRepository;
-import adminpage.repository.UserRepository;
-import adminpage.repository.UserServiceAccessRepository;
+import adminpage.entity.*;
+import adminpage.entity.embedded.UserServiceAccessId;
+import adminpage.repository.*;
 import adminpage.service.UsersService;
-import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable; 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class UsersServiceImpl implements UsersService {
+    private final UserRepository userRepository;
+    private final ServiceRepository serviceRepository;
+    private final ClientRepository clientRepository;
+    private final UserServiceAccessRepository usaRepository;
+    private final UserClientAccessRepository ucaRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ServiceRepository serviceRepository;
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private UserServiceAccessRepository usaRepository;
-    @Override
-    public List<UserEntity> getUserList(PaginatedRequest paginatedRequest){
-
-        List<UserEntity> userList = userRepository.findByStatusEquals(1);
-
-        return userList;
+    public UsersServiceImpl(UserRepository userRepository, ServiceRepository serviceRepository,
+                            ClientRepository clientRepository, UserServiceAccessRepository usaRepository,
+                            UserClientAccessRepository ucaRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.serviceRepository = serviceRepository;
+        this.clientRepository = clientRepository;
+        this.usaRepository = usaRepository;
+        this.ucaRepository = ucaRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserEntity editUser(UserEntity editedUser) {
-
-        if (editedUser.getId() == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
-
-        if(userRepository.existsById(editedUser.getId())){
-            editedUser.setUpdated(new Date());
-            editedUser.setPass(passwordEncoder.encode(editedUser.getPass()));
-            userRepository.save(editedUser);
-            return editedUser;
-        }
-        else{
-            //TODO: ERROR HANDLING
-            return null;
-        }
+    public List<UserEntity> getUserList(PaginatedRequest paginatedRequest){
+        return userRepository.findByStatusEquals(1);
     }
 
     @Override
@@ -75,34 +54,79 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UserEntity addUser(UserEntity userToAdd) {
-        //TODO: Check for replacement
-        userToAdd.setUpdated(new Date());
-        userToAdd.setCreated(new Date());
-        userToAdd.setStatus(1);
-        userRepository.save(userToAdd);
-        return userToAdd;
+    public UserEntity addUser(@NotNull UserDTO userDTO) {
+        if (userRepository.existsByLogin(userDTO.getLogin())) {
+            throw new IllegalStateException("User already exists with login: " + userDTO.getLogin());
+        }
+        UserEntity userEntity = new UserEntity(userDTO, passwordEncoder);
+        return userRepository.save(userEntity);
     }
 
-    //TODO: Check for better error handling
     @Override
+    @Transactional
+    public UserServiceAccessEntity addUserServiceAccess(UserServiceAccessEntity userServiceAccessEntity) {
+        if (userServiceAccessEntity == null) {
+            throw new IllegalArgumentException("Provided UserServiceAccessEntity cannot be null");
+        }
+
+        UserServiceAccessId id = userServiceAccessEntity.getId();
+
+        if (usaRepository.existsById(id)) {
+            throw new IllegalArgumentException("Provided UserServiceAccessEntity already exists");
+        }
+
+        return usaRepository.save(userServiceAccessEntity);
+    }
+
+    @Override
+    @Transactional
+    public UserClientAccessEntity addUserClientAccess(UserClientAccessEntity userClientAccessEntity) {
+        if (userClientAccessEntity == null) {
+            throw new IllegalArgumentException("Provided UserClientAccessEntity cannot be null");
+        }
+        if (ucaRepository.existsByUserIdAndClientId(userClientAccessEntity.getUserId(), userClientAccessEntity.getClientId()) ) {
+            throw new IllegalArgumentException("Provided UserClientAccessEntity already exists");
+        }
+        return ucaRepository.save(userClientAccessEntity);
+    }
+
+    @Override
+    public UserEntity editUser(UserDTO userDTO) {
+        if (userDTO.getId() == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+        UserEntity userToEdit = userRepository.findById(userDTO.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User with provided ID not found"));
+
+        userToEdit.updateWith(userDTO, passwordEncoder);
+        return userRepository.save(userToEdit);
+    }
+
+    @Override
+    @Transactional
     public ResponseEntity<String> deleteUser(Long userId){
-        if (userRepository.existsById(userId)){
-            UserEntity user = userRepository.getById(userId);
-            user.setStatus(0);
-            userRepository.save(user);
-            return ResponseEntity.ok("User deleted successfully");
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
+        return userRepository.findById(userId)
+                .map(user -> {
+                    user.softDelete();
+                    userRepository.save(user);
+                    return ResponseEntity.ok("User deleted successfully");
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found"));
     }
 
-    //TODO: better implementation
     @Override
-    public UserServiceAccessEntity addUserServiceAccess(UserServiceAccessEntity usa) {
-        usaRepository.save(usa);
-        return null;
+    public ResponseEntity<String> deleteUserServiceAccess(Long userId, Long serviceId) {
+        UserServiceAccessEntity usa = usaRepository.findByUserIdAndServiceId(userId, serviceId)
+                .orElseThrow(() -> new IllegalArgumentException("User Service Access not found"));
+        usaRepository.delete(usa);
+        return ResponseEntity.ok("User Service Access deleted successfully");
     }
 
+    @Override
+    public ResponseEntity<String> deleteUserClientAccess(Long userId, Long clientId) {
+        UserClientAccessEntity uca = ucaRepository.findByUserIdAndClientId(userId, clientId)
+                .orElseThrow(() -> new IllegalArgumentException("User Client Access not found"));
+        ucaRepository.delete(uca);
+        return ResponseEntity.ok("User Client Access deleted successfully");
+    }
 }

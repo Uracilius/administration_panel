@@ -1,7 +1,9 @@
 package adminpage.entity;
 
+import adminpage.DTO.UserDTO;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
@@ -25,4 +27,23 @@ public class UserEntity {
     private int status;
 
     private String description;
+
+    public UserEntity(UserDTO base, PasswordEncoder passwordEncoder){
+        this.login = base.getLogin();
+        this.pass = base.getPass();
+        this.description = passwordEncoder.encode(base.getDescription());
+        this.created = new Date();
+        this.updated = new Date();
+        this.status = 1;
+    }
+
+    public void updateWith(UserDTO base, PasswordEncoder passwordEncoder){
+        this.login = base.getLogin();
+        this.pass = passwordEncoder.encode(base.getPass());
+        this.description = base.getDescription();
+    }
+
+    public void softDelete(){
+        this.status = 0;
+    }
 }

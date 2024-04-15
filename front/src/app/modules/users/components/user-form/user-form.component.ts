@@ -38,13 +38,15 @@ export class UserFormComponent {
         description: new FormControl('', [Validators.required]),
         id : new FormControl(0, [Validators.required]),
         status: new FormControl(1, [Validators.required]),
+        created: new FormControl(new Date(), [Validators.required])
       });
       this.userForm.patchValue({
         login: this.data.existingUser.login,
         pass: this.data.existingUser.pass,
         description: this.data.existingUser.description,
         id: this.data.existingUser.id,
-        status: this.data.existingUser.status
+        status: this.data.existingUser.status,
+        created: this.data.existingUser.created
       });
       this.isEdit = true;
     }

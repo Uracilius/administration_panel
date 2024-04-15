@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<ServiceEntity, Long> {
 
-    @Query("SELECT se FROM UserServiceAccessEntity usa JOIN ServiceEntity se ON usa.service_id = se.id WHERE usa.user_id = ?1")
+    @Query("SELECT usa.service FROM UserServiceAccessEntity usa WHERE usa.user.id = ?1")
     List<ServiceEntity> findAllServicesByUserId(Long userId);
+
 
 }
