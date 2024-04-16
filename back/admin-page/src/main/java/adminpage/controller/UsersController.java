@@ -2,9 +2,7 @@ package adminpage.controller;
 
 import adminpage.DTO.ServiceDTO;
 import adminpage.DTO.UserDTO;
-import adminpage.DTO.request.PaginatedRequest;
 import adminpage.entity.*;
-import adminpage.repository.UserClientAccessRepository;
 import adminpage.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +18,12 @@ public class UsersController {
     private UsersService usersService;
 
     @GetMapping()
-    public List<UserEntity> getUsers(@ModelAttribute PaginatedRequest request) {
-        return usersService.getUserList(request);
+    public List<UserEntity> getUsers() {
+        return usersService.getUserList();
     }
 
     @GetMapping("{userId}/services")
-    public List<ServiceEntity> getUserServices(@PathVariable Long userId) {
+    public List<ServiceDTO> getUserServices(@PathVariable Long userId) {
         return usersService.getUserServices(userId);
     }
 

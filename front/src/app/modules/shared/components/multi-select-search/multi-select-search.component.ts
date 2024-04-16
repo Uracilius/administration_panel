@@ -13,16 +13,18 @@ import { MultiSelectModel } from '../../model/multi-select-model';
 })
 export class MultiSelectSearchComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  displayedColumns: string[] = ['select', 'id', 'name'];
-  dataSource: MatTableDataSource<ServiceModel>;
-  selection: SelectionModel<ServiceModel>;
+  displayedColumns: string[] = ['select', 'name', 'description'];
+  dataSource!: MatTableDataSource<any>;
+  selection = new SelectionModel<number>(true, []); 
+
+  
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: MultiSelectModel,
-    private dialogRef: MatDialogRef<MultiSelectSearchComponent> // Inject MatDialogRef
+    private dialogRef: MatDialogRef<MultiSelectSearchComponent> 
   ) {
-    this.dataSource = new MatTableDataSource<ServiceModel>(data.valueList);
-    this.selection = new SelectionModel<ServiceModel>(true, data.selectedList);
+    this.dataSource = new MatTableDataSource<any>(this.data.valueList);
+    this.selection = new SelectionModel<number>(true, this.data.selectedList.map(a=>a.id));
   }
 
   ngOnInit() {
@@ -39,14 +41,6 @@ export class MultiSelectSearchComponent implements AfterViewInit, OnInit {
     return numSelected === numRows;
   }
 
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.dataSource.data.forEach(row => this.selection.select(row));
-    }
-  }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -54,5 +48,21 @@ export class MultiSelectSearchComponent implements AfterViewInit, OnInit {
 
   closeDialogWithSelectedItems() {
     this.dialogRef.close(this.selection.selected.map(item => item));
+  }
+
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.dataSource.data.forEach(row => this.selection.select(row.id));
+    }
+  }
+
+  toggleSelection(row: ServiceModel) {
+    this.selection.toggle(row.id);
+  }
+
+  isSelected(row: ServiceModel) {
+    return this.selection.isSelected(row.id);
   }
 }

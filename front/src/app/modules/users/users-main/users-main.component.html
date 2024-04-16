@@ -2,8 +2,17 @@
     <div class="card-body">
         <div class="card-body__line">
             <div class="card-body__line-full">
-                <app-users-table></app-users-table>
-                <button mat-raised-button (click)="initializeUserForm()">Pick one</button>
+                <div class="mat-elevation-z8">
+                    <div class="table-action">
+                        <button 
+                            mat-icon-button 
+                            color="primary"
+                            (click)="initializeUserForm()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                        <app-users-table></app-users-table>
+                </div>
             </div>
         </div>
         <div class="card-body__line">

@@ -53,13 +53,13 @@ export class UsersMainComponent {
     }
 
     const dialogRef = this.dialog.open(MultiSelectSearchComponent, {
-      width: '400px',
+      minWidth: '50%',
+      maxWidth: '90%',
       data: new MultiSelectModel(this.services, this.selectedServices)
     });
-    dialogRef.afterClosed().subscribe((result: ServiceModel[]) => {
-      if (result && result.length > 0) {
-        // Assuming that result is an array of ServiceModel instances
-        this.selectedServiceIds = result.map(service => service.id);
+    dialogRef.afterClosed().subscribe((result: number[]) => {
+      if (result  && JSON.stringify(result) !== JSON.stringify(this.selectedServices.map(a => a.id))) {
+        this.selectedServiceIds = result;
         this.usersApiService.setUserServiceAccess(this.userId, this.selectedServiceIds).subscribe({
           next: (response) => {
             console.log('Service access updated successfully:', response);
@@ -74,7 +74,7 @@ export class UsersMainComponent {
 
   addClientAccess(){
     const dialogRef = this.dialog.open(MultiSelectSearchComponent, {
-      width: '250px',
+      width: '50%',
       data: {}
     });
   }

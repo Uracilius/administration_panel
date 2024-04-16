@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { FormGroup } from '@angular/forms';
+import { ServiceModel } from '../../shared/model/service-model';
 
 
 @Injectable({
@@ -18,8 +19,8 @@ export class UsersApiService {
     return this.http.get<any>(`${this.path}`, { params });
   }
 
-  getUserServicesList(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.path}/${userId}/services`);
+  getUserServicesList(userId: number): Observable<ServiceModel[]> {
+    return this.http.get<ServiceModel[]>(`${this.path}/${userId}/services`);
   }
 
   getUserClientsList(userId: number): Observable<any> {
@@ -30,8 +31,8 @@ export class UsersApiService {
     return this.http.post<any>(`${this.path}/user`, formData.value);
   }
 
-  setUserServiceAccess(userId: number, serviceIds: number[]): Observable<any[]> {
-    return this.http.post<any[]>(`${this.path}/service-access/${userId}`, serviceIds);
+  setUserServiceAccess(userId: number, serviceIds: number[]): Observable<ServiceModel[]> {
+    return this.http.post<ServiceModel[]>(`${this.path}/service-access/${userId}`, serviceIds);
   }
 
   editUser(formData: FormGroup): Observable<any> {

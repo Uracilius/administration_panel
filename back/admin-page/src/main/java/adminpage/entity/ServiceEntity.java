@@ -51,6 +51,7 @@ public class ServiceEntity {
         this.name = base.getName();
         this.description = base.getDescription();
         this.url = base.getUrl();
+        this.updated = new Date();
     }
 
     public void softDelete(){

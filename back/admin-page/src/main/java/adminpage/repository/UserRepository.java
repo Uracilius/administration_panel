@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    List<UserEntity> findByStatusEquals(int status);
+    List<UserEntity> findByStatusEqualsOrderById(int status);
 
     UserEntity getById(Long id);
 

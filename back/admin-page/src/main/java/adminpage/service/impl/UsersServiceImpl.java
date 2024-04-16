@@ -2,13 +2,11 @@ package adminpage.service.impl;
 
 import adminpage.DTO.ServiceDTO;
 import adminpage.DTO.UserDTO;
-import adminpage.DTO.request.PaginatedRequest;
 import adminpage.entity.*;
 import adminpage.entity.embedded.UserServiceAccessId;
 import adminpage.repository.*;
 import adminpage.service.UsersService;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.catalina.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -46,13 +46,17 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<UserEntity> getUserList(PaginatedRequest paginatedRequest){
-        return userRepository.findByStatusEquals(1);
+    public List<UserEntity> getUserList(){
+        return userRepository.findByStatusEqualsOrderById(1);
     }
 
     @Override
-    public List<ServiceEntity> getUserServices(Long userId) {
-        return serviceRepository.findAllServicesByUserId(userId);
+
+    public List<ServiceDTO> getUserServices(Long userId) {
+        List<ServiceEntity> serviceEntities = serviceRepository.findAllServicesByUserId(userId);
+        return serviceEntities.stream()
+                .map(ServiceDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -75,6 +79,11 @@ public class UsersServiceImpl implements UsersService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
+        if (serviceIds.isEmpty()) {
+            usaRepository.deleteByUserId(userId); // Assuming you have a method to delete all records for a user
+            return Collections.emptyList(); // Return an empty list or appropriate response
+        }
+
         List<ServiceEntity> services = serviceRepository.findAllById(serviceIds);
         if (services.size() != serviceIds.size()) {
             throw new EntityNotFoundException("One or more services not found");
@@ -94,9 +103,6 @@ public class UsersServiceImpl implements UsersService {
 
         return usaEntities;
     }
-
-
-
 
     @Override
     @Transactional

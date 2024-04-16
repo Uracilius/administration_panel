@@ -18,7 +18,7 @@ export class UsersTableComponent {
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   page =  0;
-  pageSize = 10;
+  pageSize = 5;
   selectedRow = -1;
   status = '';
   constructor(
@@ -69,7 +69,7 @@ export class UsersTableComponent {
       })
     ).subscribe(response => {
       if (response) {
-        console.log('Deletion successful:', response);
+        console.log('Deletion successful:');
       } else {
         console.log('Deletion cancelled or failed');
       }

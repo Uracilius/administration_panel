@@ -43,6 +43,7 @@ public class UserEntity {
         this.login = base.getLogin();
         this.pass = passwordEncoder.encode(base.getPass());
         this.description = base.getDescription();
+        this.updated = new Date();
     }
 
     public void softDelete(){
