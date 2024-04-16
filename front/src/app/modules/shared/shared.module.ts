@@ -6,13 +6,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RelationFormComponent } from './components/relation-form/relation-form.component';
 import { MaterialModule } from '../../../assets/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MultiSelectSearchComponent } from './components/multi-select-search/multi-select-search.component';
 
 
 @NgModule({
   declarations: [
     EditableItemsListComponent,
     DeleteConfirmationComponent,
-    RelationFormComponent
+    RelationFormComponent,
+    MultiSelectSearchComponent
   ],
   imports: [
     CommonModule,

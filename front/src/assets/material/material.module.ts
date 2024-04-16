@@ -15,6 +15,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 @NgModule({
   imports: [
   ],
@@ -34,7 +38,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatMenuModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialModule {}

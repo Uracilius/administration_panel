@@ -22,4 +22,10 @@ public class UserServiceAccessEntity {
     @JoinColumn(name = "service_id")
     private ServiceEntity service;
 
+    public UserServiceAccessEntity() {
+    }
+
+    public UserServiceAccessEntity(UserServiceAccessId id) {
+        this.id = id;
+    }
 }

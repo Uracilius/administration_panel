@@ -1,5 +1,6 @@
 package adminpage.service;
 
+import adminpage.DTO.ServiceDTO;
 import adminpage.DTO.UserDTO;
 import adminpage.DTO.request.PaginatedRequest;
 import adminpage.entity.*;
@@ -14,7 +15,7 @@ public interface UsersService {
 
     List<ServiceEntity> getUserServices(Long userId);
 
-    UserServiceAccessEntity addUserServiceAccess(UserServiceAccessEntity usa);
+    List<UserServiceAccessEntity> setUserServiceAccess(Long userId, List<Long> serviceIds);
 
     ResponseEntity<String> deleteUserServiceAccess(Long userId, Long serviceId);
 

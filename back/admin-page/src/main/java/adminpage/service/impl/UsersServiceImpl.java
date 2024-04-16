@@ -1,11 +1,14 @@
 package adminpage.service.impl;
 
+import adminpage.DTO.ServiceDTO;
 import adminpage.DTO.UserDTO;
 import adminpage.DTO.request.PaginatedRequest;
 import adminpage.entity.*;
 import adminpage.entity.embedded.UserServiceAccessId;
 import adminpage.repository.*;
 import adminpage.service.UsersService;
+import jakarta.persistence.EntityNotFoundException;
+import org.apache.catalina.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,9 +31,12 @@ public class UsersServiceImpl implements UsersService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersServiceImpl(UserRepository userRepository, ServiceRepository serviceRepository,
-                            ClientRepository clientRepository, UserServiceAccessRepository usaRepository,
-                            UserClientAccessRepository ucaRepository, PasswordEncoder passwordEncoder) {
+    public UsersServiceImpl(UserRepository userRepository,
+                            ServiceRepository serviceRepository,
+                            ClientRepository clientRepository,
+                            UserServiceAccessRepository usaRepository,
+                            UserClientAccessRepository ucaRepository,
+                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
         this.clientRepository = clientRepository;
@@ -62,21 +69,34 @@ public class UsersServiceImpl implements UsersService {
         return userRepository.save(userEntity);
     }
 
-    @Override
     @Transactional
-    public UserServiceAccessEntity addUserServiceAccess(UserServiceAccessEntity userServiceAccessEntity) {
-        if (userServiceAccessEntity == null) {
-            throw new IllegalArgumentException("Provided UserServiceAccessEntity cannot be null");
+    @Override
+    public List<UserServiceAccessEntity> setUserServiceAccess(Long userId, List<Long> serviceIds) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        List<ServiceEntity> services = serviceRepository.findAllById(serviceIds);
+        if (services.size() != serviceIds.size()) {
+            throw new EntityNotFoundException("One or more services not found");
         }
 
-        UserServiceAccessId id = userServiceAccessEntity.getId();
+        List<UserServiceAccessEntity> usaEntities = new ArrayList<>();
+        for (ServiceEntity service : services) {
+            UserServiceAccessId usaId = new UserServiceAccessId(userId, service.getId());
+            UserServiceAccessEntity usa = usaRepository.findById(usaId)
+                    .orElse(new UserServiceAccessEntity(usaId)); // Create new or use existing
 
-        if (usaRepository.existsById(id)) {
-            throw new IllegalArgumentException("Provided UserServiceAccessEntity already exists");
+            usa.setUser(user);
+            usa.setService(service);
+            usaEntities.add(usa);
         }
+        usaRepository.saveAll(usaEntities);
 
-        return usaRepository.save(userServiceAccessEntity);
+        return usaEntities;
     }
+
+
+
 
     @Override
     @Transactional
@@ -95,11 +115,11 @@ public class UsersServiceImpl implements UsersService {
         if (userDTO.getId() == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
-        UserEntity userToEdit = userRepository.findById(userDTO.getId())
+        UserEntity userEntity = userRepository.findById(userDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User with provided ID not found"));
 
-        userToEdit.updateWith(userDTO, passwordEncoder);
-        return userRepository.save(userToEdit);
+        userEntity.updateWith(userDTO, passwordEncoder);
+        return userRepository.save(userEntity);
     }
 
     @Override

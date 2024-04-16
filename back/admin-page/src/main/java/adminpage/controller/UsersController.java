@@ -1,5 +1,6 @@
 package adminpage.controller;
 
+import adminpage.DTO.ServiceDTO;
 import adminpage.DTO.UserDTO;
 import adminpage.DTO.request.PaginatedRequest;
 import adminpage.entity.*;
@@ -38,9 +39,9 @@ public class UsersController {
         return usersService.addUser(user);
     }
 
-    @PostMapping ("service-access")
-    public UserServiceAccessEntity addUserServiceAccess(@RequestBody UserServiceAccessEntity userServiceAccessEntity) {
-        return usersService.addUserServiceAccess(userServiceAccessEntity);
+    @PostMapping ("service-access/{userId}")
+    public List<UserServiceAccessEntity> setUserServiceAccess(@PathVariable Long userId, @RequestBody List<Long> serviceIds) {
+        return usersService.setUserServiceAccess(userId, serviceIds);
     }
 
     @PostMapping("client-access")

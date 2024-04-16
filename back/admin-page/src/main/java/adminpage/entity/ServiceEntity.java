@@ -1,9 +1,7 @@
 package adminpage.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import adminpage.DTO.ServiceDTO;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,12 +11,15 @@ import java.util.Date;
 @Table(name = "esb_auth_services", schema = "esb")
 public class ServiceEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String code;
 
     @Column(unique = true)
     private String name;
+
+    private String url;
 
     private String description;
 
@@ -30,4 +31,29 @@ public class ServiceEntity {
 
     private int status;
 
+    public ServiceEntity() {
+    }
+
+    //Constructor for new service
+    public ServiceEntity(ServiceDTO base){
+        this.code = base.getCode();
+        this.name = base.getName();
+        this.description = base.getDescription();
+        this.url = base.getUrl();
+        this.created = new Date();
+        this.updated = new Date();
+        this.status = 1;
+    }
+
+    //method for updating service
+    public void updateWith(ServiceDTO base){
+        this.code = base.getCode();
+        this.name = base.getName();
+        this.description = base.getDescription();
+        this.url = base.getUrl();
+    }
+
+    public void softDelete(){
+        this.status = 0;
+    }
 }

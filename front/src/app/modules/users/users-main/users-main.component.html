@@ -8,10 +8,30 @@
         </div>
         <div class="card-body__line">
             <div class="card-body__line-left">
-                <app-user-services-table></app-user-services-table>
+                <div class="mat-elevation-z8 custom-table">
+                    <div class="table-action">
+                        <button 
+                            mat-icon-button 
+                            color="primary"
+                            (click)="addServiceAccess()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                    <app-user-services-table></app-user-services-table>
+                </div>
             </div>
-            <div class="card-body__line-left">
-                <app-user-clients-table></app-user-clients-table>
+            <div class="card-body__line-right">
+                <div class="mat-elevation-z8 custom-table">
+                    <div class="table-action">
+                        <button 
+                            mat-icon-button 
+                            color="primary"
+                            (click)="addClientAccess()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                    <app-user-clients-table></app-user-clients-table>
+                </div>
             </div>
         </div>
     </div>

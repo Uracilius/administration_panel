@@ -1,11 +1,4 @@
-.line-halfheight-full{
-    height:50%;
-    width:100%;
-    margin:5px;
-}
-
-.line-halfheight-left{
-    height:50%;
-    width:50%;
-    float:left;
+.table-action{
+    float:right;
+    margin:2%
 }

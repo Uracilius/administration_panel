@@ -30,8 +30,8 @@ export class UsersApiService {
     return this.http.post<any>(`${this.path}/user`, formData.value);
   }
 
-  addUserServiceAccess(formData: FormGroup): Observable<any> {
-    return this.http.post<any>(`${this.path}/service-access`, formData.value);
+  setUserServiceAccess(userId: number, serviceIds: number[]): Observable<any[]> {
+    return this.http.post<any[]>(`${this.path}/service-access/${userId}`, serviceIds);
   }
 
   editUser(formData: FormGroup): Observable<any> {

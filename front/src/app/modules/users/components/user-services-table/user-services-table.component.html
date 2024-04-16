@@ -1,12 +1,4 @@
-<div class="mat-elevation-z8 custom-table">
-    <div class="table-action">
-        <button 
-            mat-icon-button 
-            color="primary"
-            (click)="addServiceAccess()">
-            <mat-icon>addcircle</mat-icon>
-        </button>
-    </div>
+<div>
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="code">
             <th mat-header-cell *matHeaderCellDef> code </th>
