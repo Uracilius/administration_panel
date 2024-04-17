@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<ServiceEntity, Long> {
 
-    @Query("SELECT usa.service FROM UserServiceAccessEntity usa WHERE usa.user.id = ?1")
+    @Query("SELECT s FROM ServiceEntity s JOIN UserServiceAccessEntity usa ON s.id = usa.id.serviceId WHERE usa.id.userId = ?1")
     List<ServiceEntity> findAllServicesByUserId(Long userId);
 
     List<ServiceEntity> findByStatusEquals(int status);

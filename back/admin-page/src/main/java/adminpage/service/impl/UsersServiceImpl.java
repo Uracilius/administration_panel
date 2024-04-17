@@ -3,12 +3,13 @@ package adminpage.service.impl;
 import adminpage.DTO.ServiceDTO;
 import adminpage.DTO.UserDTO;
 import adminpage.entity.*;
+import adminpage.entity.embedded.UserClientAccessId;
 import adminpage.entity.embedded.UserServiceAccessId;
 import adminpage.repository.*;
 import adminpage.service.UsersService;
+import adminpage.validator.GlobalValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,12 +32,15 @@ public class UsersServiceImpl implements UsersService {
     private final UserClientAccessRepository ucaRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final GlobalValidator globalValidator;
+
     @Autowired
     public UsersServiceImpl(UserRepository userRepository,
                             ServiceRepository serviceRepository,
                             ClientRepository clientRepository,
                             UserServiceAccessRepository usaRepository,
                             UserClientAccessRepository ucaRepository,
+                            GlobalValidator globalValidator,
                             PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
@@ -43,15 +48,17 @@ public class UsersServiceImpl implements UsersService {
         this.usaRepository = usaRepository;
         this.ucaRepository = ucaRepository;
         this.passwordEncoder = passwordEncoder;
+        this.globalValidator = globalValidator;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<UserEntity> getUserList(){
         return userRepository.findByStatusEqualsOrderById(1);
     }
 
     @Override
-
+    @Transactional(readOnly = true)
     public List<ServiceDTO> getUserServices(Long userId) {
         List<ServiceEntity> serviceEntities = serviceRepository.findAllServicesByUserId(userId);
         return serviceEntities.stream()
@@ -60,60 +67,65 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ClientEntity> getUserClients(Long userId) {
         return clientRepository.findAllClientsByUserId(userId);
     }
 
     @Override
-    public UserEntity addUser(@NotNull UserDTO userDTO) {
-        if (userRepository.existsByLogin(userDTO.getLogin())) {
-            throw new IllegalStateException("User already exists with login: " + userDTO.getLogin());
-        }
+    public UserEntity addUser(UserDTO userDTO) {
+        globalValidator.checkLoginExists(userDTO.getLogin());
+
         UserEntity userEntity = new UserEntity(userDTO, passwordEncoder);
         return userRepository.save(userEntity);
     }
 
     @Transactional
     @Override
-    public List<UserServiceAccessEntity> setUserServiceAccess(Long userId, List<Long> serviceIds) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public List<UserServiceAccessEntity> addUserServiceAccessList(Long userId, List<Long> serviceIds) {
+        globalValidator.checkListEmpty(serviceIds);
 
-        if (serviceIds.isEmpty()) {
-            usaRepository.deleteByUserId(userId); // Assuming you have a method to delete all records for a user
-            return Collections.emptyList(); // Return an empty list or appropriate response
-        }
+        globalValidator.checkExistsById(userRepository, userId);
 
         List<ServiceEntity> services = serviceRepository.findAllById(serviceIds);
-        if (services.size() != serviceIds.size()) {
-            throw new EntityNotFoundException("One or more services not found");
-        }
+        globalValidator.checkListsSameSize(services, serviceIds, "One or more services ahs not been found");
 
         List<UserServiceAccessEntity> usaEntities = new ArrayList<>();
         for (ServiceEntity service : services) {
             UserServiceAccessId usaId = new UserServiceAccessId(userId, service.getId());
-            UserServiceAccessEntity usa = usaRepository.findById(usaId)
-                    .orElse(new UserServiceAccessEntity(usaId)); // Create new or use existing
+            Optional<UserServiceAccessEntity> existingUsa = usaRepository.findById(usaId);
 
-            usa.setUser(user);
-            usa.setService(service);
-            usaEntities.add(usa);
+            globalValidator.checkAlreadyPresent(existingUsa);
+
+            usaEntities.add(new UserServiceAccessEntity(usaId));
         }
         usaRepository.saveAll(usaEntities);
 
         return usaEntities;
     }
 
-    @Override
     @Transactional
-    public UserClientAccessEntity addUserClientAccess(UserClientAccessEntity userClientAccessEntity) {
-        if (userClientAccessEntity == null) {
-            throw new IllegalArgumentException("Provided UserClientAccessEntity cannot be null");
+    @Override
+    public List<UserClientAccessEntity> addUserClientAccessList(Long userId, List<Long> clientIds) {
+        globalValidator.checkListEmpty(clientIds);
+
+        globalValidator.checkExistsById(userRepository, userId);
+
+        List<ClientEntity> clients = clientRepository.findAllById(clientIds);
+        globalValidator.checkListsSameSize(clients, clientIds, "One or more clients has not been found");
+
+        List<UserClientAccessEntity> ucaEntities = new ArrayList<>();
+        for (ClientEntity client : clients) {
+            UserClientAccessId ucaId = new UserClientAccessId(userId, client.getId());
+            Optional<UserClientAccessEntity> existingUca = ucaRepository.findById(ucaId);
+            globalValidator.checkAlreadyPresent(existingUca);
+
+            ucaEntities.add(new UserClientAccessEntity(ucaId));
         }
-        if (ucaRepository.existsByUserIdAndClientId(userClientAccessEntity.getUserId(), userClientAccessEntity.getClientId()) ) {
-            throw new IllegalArgumentException("Provided UserClientAccessEntity already exists");
-        }
-        return ucaRepository.save(userClientAccessEntity);
+
+        ucaRepository.saveAll(ucaEntities);
+
+        return ucaEntities;
     }
 
     @Override
@@ -141,16 +153,18 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> deleteUserServiceAccess(Long userId, Long serviceId) {
-        UserServiceAccessEntity usa = usaRepository.findByUserIdAndServiceId(userId, serviceId)
+        UserServiceAccessEntity usa = usaRepository.findById(new UserServiceAccessId(userId, serviceId))
                 .orElseThrow(() -> new IllegalArgumentException("User Service Access not found"));
         usaRepository.delete(usa);
         return ResponseEntity.ok("User Service Access deleted successfully");
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> deleteUserClientAccess(Long userId, Long clientId) {
-        UserClientAccessEntity uca = ucaRepository.findByUserIdAndClientId(userId, clientId)
+        UserClientAccessEntity uca = ucaRepository.findById(new UserClientAccessId(userId, clientId))
                 .orElseThrow(() -> new IllegalArgumentException("User Client Access not found"));
         ucaRepository.delete(uca);
         return ResponseEntity.ok("User Client Access deleted successfully");

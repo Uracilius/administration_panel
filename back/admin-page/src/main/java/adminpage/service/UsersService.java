@@ -14,19 +14,21 @@ public interface UsersService {
 
     List<ServiceDTO> getUserServices(Long userId);
 
-    List<UserServiceAccessEntity> setUserServiceAccess(Long userId, List<Long> serviceIds);
+    List<UserClientAccessEntity> addUserClientAccessList(Long userId, List<Long> clientIds);
+
+    List<UserServiceAccessEntity> addUserServiceAccessList(Long userId, List<Long> serviceIds);
 
     ResponseEntity<String> deleteUserServiceAccess(Long userId, Long serviceId);
 
     List<ClientEntity> getUserClients(Long userId);
-
-    UserClientAccessEntity addUserClientAccess(UserClientAccessEntity userClientAccessEntity);
 
     ResponseEntity<String> deleteUserClientAccess(Long userId, Long clientId);
 
     UserEntity addUser(UserDTO user);
 
     ResponseEntity<String> deleteUser(Long userId);
+
+
 
 
 }

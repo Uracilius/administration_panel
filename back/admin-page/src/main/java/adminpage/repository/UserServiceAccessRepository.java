@@ -11,10 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface UserServiceAccessRepository extends JpaRepository<UserServiceAccessEntity, UserServiceAccessId> {
-    Optional<UserServiceAccessEntity> findByUserIdAndServiceId(Long userId, Long serviceId);
+    Optional<UserServiceAccessEntity> findById(UserServiceAccessId usa);
 
     @Transactional
-    void deleteByUserId(Long userId);
+    void deleteById_UserId(Long userId);
 
     @Transactional
     void deleteById(UserServiceAccessId id);

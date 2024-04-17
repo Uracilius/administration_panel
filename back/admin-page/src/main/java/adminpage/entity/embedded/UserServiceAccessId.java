@@ -14,10 +14,8 @@ public class UserServiceAccessId implements Serializable {
     private Long serviceId;
 
     public UserServiceAccessId() {}
-
     public UserServiceAccessId(Long userId, Long serviceId) {
         this.userId = userId;
         this.serviceId = serviceId;
     }
-
 }

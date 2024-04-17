@@ -12,19 +12,7 @@ public class UserServiceAccessEntity {
     @EmbeddedId
     private UserServiceAccessId id;
 
-    @MapsId("userId")
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
-    @MapsId("serviceId")
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private ServiceEntity service;
-
-    public UserServiceAccessEntity() {
-    }
-
+    public UserServiceAccessEntity() {}
     public UserServiceAccessEntity(UserServiceAccessId id) {
         this.id = id;
     }
