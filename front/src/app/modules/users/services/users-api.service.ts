@@ -35,6 +35,10 @@ export class UsersApiService {
     return this.http.post<ServiceModel[]>(`${this.path}/service-access/${userId}`, serviceIds);
   }
 
+  setUserClientAccess(userId: number, clientIds: number[]): Observable<ServiceModel[]> {
+    return this.http.post<ServiceModel[]>(`${this.path}/client-access/${userId}`, clientIds);
+  }
+
   editUser(formData: FormGroup): Observable<any> {
     return this.http.patch<any>(`${this.path}/edit`, formData.value);
   }

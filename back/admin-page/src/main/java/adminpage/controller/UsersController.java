@@ -23,7 +23,7 @@ public class UsersController {
     private UsersService usersService;
 
     @GetMapping()
-    public List<UserEntity> getUsers() {
+    public List<UserDTO> getUsers() {
         return usersService.getUserList();
     }
 
@@ -52,7 +52,7 @@ public class UsersController {
         return usersService.addUserClientAccessList(userId, clientIds);
     }
 
-    @PatchMapping("edit")
+    @PutMapping("edit")
     public ResponseEntity<UserEntity> editUser(@Valid @RequestBody UserDTO user) {
         return ResponseEntity.ok(usersService.editUser(user));
     }

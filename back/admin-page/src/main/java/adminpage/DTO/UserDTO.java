@@ -1,5 +1,6 @@
 package adminpage.DTO;
 
+import adminpage.entity.UserEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -17,5 +18,12 @@ public class UserDTO {
         this.login = login;
         this.description = description;
         this.pass = pass;
+    }
+
+    public UserDTO(UserEntity userEntity){
+        this.id = userEntity.getId();
+        this.login = userEntity.getLogin();
+        this.description = userEntity.getDescription();
+        this.pass = userEntity.getPass();
     }
 }

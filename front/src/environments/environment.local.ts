@@ -3,4 +3,5 @@ export const environment = {
     LOGIN_API_URL: 'http://localhost:8080',   
     USERS_API_URL: 'http://localhost:8080/users',
     SERVICES_API_URL: 'http://localhost:8080/services',
+    CLIENTS_API_URL: 'http://localhost:8080/clients',
 };

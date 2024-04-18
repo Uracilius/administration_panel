@@ -53,8 +53,11 @@ public class UsersServiceImpl implements UsersService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<UserEntity> getUserList(){
-        return userRepository.findByStatusEqualsOrderById(1);
+    public List<UserDTO> getUserList(){
+        List<UserEntity> userEntities = userRepository.findByStatusEqualsOrderById(1);
+        return userEntities.stream()
+                .map(UserDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -87,8 +90,9 @@ public class UsersServiceImpl implements UsersService {
 
         globalValidator.checkExistsById(userRepository, userId);
 
+
         List<ServiceEntity> services = serviceRepository.findAllById(serviceIds);
-        globalValidator.checkListsSameSize(services, serviceIds, "One or more services ahs not been found");
+        globalValidator.checkListsSameSize(services, serviceIds, "One or more services has not been found");
 
         List<UserServiceAccessEntity> usaEntities = new ArrayList<>();
         for (ServiceEntity service : services) {

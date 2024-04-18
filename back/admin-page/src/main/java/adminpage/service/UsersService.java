@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UsersService {
-    List<UserEntity> getUserList();
+    List<UserDTO> getUserList();
 
     UserEntity editUser(UserDTO user);
 

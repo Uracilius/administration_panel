@@ -7,6 +7,7 @@ import { MultiSelectModel } from '../../shared/model/multi-select-model';
 import { UsersApiService } from '../services/users-api.service';
 import { SharedApiService } from '../../shared/services/shared-api.service';
 import { ServiceModel } from '../../shared/model/service-model';
+import { ClientModel } from '../../shared/model/client-model';
 
 @Component({
   selector: 'app-users-main',
@@ -25,6 +26,10 @@ export class UsersMainComponent {
   selectedServices: ServiceModel[] = [];
   selectedServiceIds: number[] = [];
 
+  clients: ClientModel[] = [];
+  selectedClients: ClientModel[] = [];
+  selectedClientIds: number[] = [];
+
   ngOnInit(){
     this.initSubscribe();
   }
@@ -40,7 +45,7 @@ export class UsersMainComponent {
       userId => {
         if (userId !== -1){
           this.userId=userId;
-          this.retrieveServiceData();
+          this.retrieveData();
         }
       }
     )
@@ -73,13 +78,33 @@ export class UsersMainComponent {
   }
 
   addClientAccess(){
+    if (this.userId === -1){
+      console.log('No user selected');
+      return;
+    }
+
     const dialogRef = this.dialog.open(MultiSelectSearchComponent, {
-      width: '50%',
-      data: {}
+      minWidth: '50%',
+      maxWidth: '90%',
+      data: new MultiSelectModel(this.clients, this.selectedClients)
+    });
+    dialogRef.afterClosed().subscribe((result: number[]) => {
+      if (result  && JSON.stringify(result) !== JSON.stringify(this.selectedClients.map(a => a.id))) {
+        this.selectedClientIds = result;
+        this.usersApiService.setUserClientAccess(this.userId, this.selectedClientIds).subscribe({
+          next: (response) => {
+            console.log('Service access updated successfully:', response);
+          },
+          error: (error) => {
+            console.error('Failed to update service access:', error);
+          }
+        });
+      }
     });
   }
 
-  retrieveServiceData(){
+  retrieveData(){
+    //Services
     this.usersApiService.getUserServicesList(this.userId).subscribe(
       res => {
         this.selectedServices = res;
@@ -89,6 +114,19 @@ export class UsersMainComponent {
     this.sharedApiService.getServicesList().subscribe(
       res => {
         this.services = res;
+      }
+    );
+
+    //Clients
+    this.usersApiService.getUserClientsList(this.userId).subscribe(
+      res => {
+        this.selectedClients = res;
+      }
+    );
+
+    this.sharedApiService.getClientsList().subscribe(
+      res => {
+        this.clients = res;
       }
     );
   }
